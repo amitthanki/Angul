@@ -1,0 +1,32 @@
+﻿import { Component } from "@angular/core";
+import { Customer } from "../Model/Customer";
+import { FormGroup,FormControl } from "@angular/forms";
+
+@Component({
+    selector: "customer-ui",
+    templateUrl: "../UI/Customer.html"
+})
+export class CustomerComponent {
+    //customerobj: Customer = new Customer();
+
+    //constructor() {
+    //    this.customerobj.CustomerId = "1";
+    //    this.customerobj.CustomerName = "Amit";
+    //    this.customerobj.CustomerAmount = 100
+    //}
+
+    userForm = new FormGroup({
+        name: new FormControl(),
+        email: new FormControl(),
+        address: new FormGroup({
+            street: new FormControl(),
+            city: new FormControl(),
+            postalcode: new FormControl()
+        })
+
+    });
+
+    onSubmit() {
+        console.log(this.userForm.value);
+    }
+}

@@ -1,0 +1,63 @@
+﻿import { Component,OnInit } from "@angular/core";
+import { Customer } from "../Model/Customer";
+//import { FormGroup,FormControl,Validators } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { CountryStateService } from "../Services/CountryStateService";
+import { Country } from "../Model/Country";
+
+@Component({
+    selector: "customer-ui",
+    templateUrl: "../UI/Customer.html",
+    styles: [`
+        input.ng-invalid{border-left:5px solid red;}
+        input.ng-valid{border-left:5px solid green;}
+        `]
+})
+export class CustomerComponent implements OnInit {
+    //customerobj: Customer = new Customer();
+
+    //constructor() {
+    //    this.customerobj.CustomerId = "1";
+    //    this.customerobj.CustomerName = "Amit";
+    //    this.customerobj.CustomerAmount = 100
+    //}
+
+    userForm: FormGroup;
+    serviceObj: CountryStateService = null;
+
+    countries: Country[];
+    SelectedCountry: Country = new Country(0,'');
+
+    constructor(private _formBuilder: FormBuilder, private _service: CountryStateService)
+    {
+        this.serviceObj = _service;
+        this.countries = this.serviceObj.getCountries();         
+    }
+    ngOnInit() {
+        this.userForm = this._formBuilder.group({
+            name: ['Amit', [Validators.required, Validators.minLength(4), Validators.maxLength(10)]],
+            email: [],
+            address: this._formBuilder.group({
+                street: [],
+                city: [],
+                postalcode: [null, Validators.pattern('^[1-9][0-9]{4}$')]                
+            }),
+            SelectedCountry: []
+        })
+    }
+   /* userForm = new FormGroup({
+        name: new FormControl('Amit', [Validators.required, Validators.minLength(4), Validators.maxLength(10)]),
+        email: new FormControl(),
+        address: new FormGroup({
+            street: new FormControl(),
+            city: new FormControl(),
+            postalcode: new FormControl(null, Validators.pattern('^[1-9][0-9]{4}$'))
+        })
+
+    });*/
+
+    onSubmit() {
+
+        console.log(this.userForm.value);
+    }
+}
